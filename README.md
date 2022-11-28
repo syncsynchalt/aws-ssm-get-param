@@ -13,7 +13,7 @@ Substituting any of the dependencies above for equivalents is left as an exercis
 
 Share and enjoy!
 
-### Usage
+## Usage
 
 Common setup:
 
