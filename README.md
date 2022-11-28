@@ -9,7 +9,7 @@ It currently depends on:
 - `curl` - for making web requests
 - `python3` - for processing the json output
 
-Substituting any of the dependencies for other dependencies is an exercise for the reader.
+Substituting any of the dependencies above for equivalents is left as an exercise for the reader.
 
 Share and enjoy!
 
