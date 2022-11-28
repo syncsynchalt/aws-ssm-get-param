@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+set -o pipefail
+
 key="${AWS_ACCESS_KEY_ID}"
 secret="${AWS_SECRET_ACCESS_KEY}"
 region="${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
@@ -67,7 +69,7 @@ signing_key=$skey4
 sig=$(hmac_sign "$string_to_sign" "$signing_key")
 auth_header="AWS4-HMAC-SHA256 Credential=$key/$datestamp/$region/$service/aws4_request,SignedHeaders=content-type;host;x-amz-content-sha256;x-amz-date;x-amz-target,Signature=$sig"
 
-curl -s -X $verb https://$host$uri \
+curl -s --fail-with-body -X $verb https://$host$uri \
     -H "Content-Type: application/x-amz-json-1.1" \
     -H "Host: $host" \
     -H "Authorization: $auth_header" \
@@ -77,5 +79,9 @@ curl -s -X $verb https://$host$uri \
     -d "$payload" | python3 -c '
 import json, sys
 data = json.load(sys.stdin)
-print(data["Parameter"]["Value"])
+if "Parameter" in data:
+    print(data["Parameter"]["Value"])
+else:
+    import pprint
+    pprint.pprint(data)
 '
